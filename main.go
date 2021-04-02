@@ -28,12 +28,10 @@ func main() {
 		wg.Add(1)
 		go func() {
 			a, _ := s.Attr("href")
-			fmt.Println(a)
 			downloadandsave(a)
 			wg.Done()
 		}()
 	})
-	
 	wg.Wait()
 }
 
@@ -41,8 +39,10 @@ func downloadandsave(s string) {
 	str := "https:" + s
 	fname := strings.Split(str, "/")[len(strings.Split(str, "/"))-1]
 	if _, err := os.Stat(fname); !os.IsNotExist(err) {
+		fmt.Println(fname, "has already been downloaded")
 		return
 	}
+	fmt.Println("Downloading", fname)
 	res, err := c.Get(str)
 	if err != nil {
 		panic(err)
